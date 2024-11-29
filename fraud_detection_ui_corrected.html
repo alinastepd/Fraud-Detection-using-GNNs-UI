@@ -40,22 +40,39 @@
             cursor: pointer;
         }
         .predict {
-            background-color: #f77;
+            background-color: rgb(171, 63, 63);
             color: white;
         }
         .clear {
-            background-color: #ddd;
+            background-color: #adbade;
             color: black;
+        }
+        .show-graph {
+            background-color: rgb(126, 126, 203);
+            color: rgb(0, 0, 0);
+        }
+        .back
+        {
+            background-color: rgb(119, 112, 209);
+            color: rgb(0, 0, 0);
         }
         #results {
             margin-top: 20px;
             font-size: 1.2em;
             color: #555;
         }
+        #graph-container {
+            display: none;
+            text-align: center;
+        }
+        #graph-container img {
+            max-width: 100%;
+            height: auto;
+        }
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="container" id="main-container">
         <h1>Fraud Detection using GNNs UI</h1>
         <p>Welcome to the Fraud Detection Portal! This portal created for calculation the probability of fraudulent transactions between users.
         To get started, follow the instructions below:  
@@ -63,7 +80,9 @@
             <p> 2) in the TO field, choose the user to whom the transaction will be made;
             <p> 3) in the AMOUNT field, enter the amount of money you are going to transfer to another user;
             <p> 4) to get the result, click the PREDICT button;
-            <p> 5) to re-enter the data, click the CLEAR button.
+            <p> 5) to re-enter the data, click the CLEAR button;
+            <p> 6) to view all transactions as a graph, click on the SHOW THE GRAPH button;
+            <p> 7) to return to the main page, click the BACK button.
         </p>
         <div class="field">
             <label for="from">From</label>
@@ -85,8 +104,17 @@
         </div>
         <button class="predict" onclick="predictFraud()">Predict</button>
         <button class="clear" onclick="clearFields()">Clear</button>
+        <button class="show-graph" onclick="showGraph()">Show the graph</button>
         <div id="results">Results: n% fraudulent</div>
     </div>
+
+    <div class="container" id="graph-container">
+        <h>The graph represents 1.32 million transactions between accounts. The nodes act as user accounts (IDs), and the edges act as fund transactions. Red edges show fraudulent transactions.</h>
+        <img src="Graph.png" alt="Graph Image">
+        <button class="back" onclick="showMain()">Back</button>
+    </div>
+
+
     <script>
         function predictFraud() {
             const from = document.getElementById('from').value;
@@ -110,6 +138,23 @@
             document.getElementById('amount').value = '';
             document.getElementById('results').textContent = 'Results: n% fraudulent';
         }
+
+
+        // Function to show the graph
+        function showGraph() {
+            document.getElementById('main-container').style.display = 'none';
+            document.getElementById('graph-container').style.display = 'block';
+        }
+
+        // Function to show the main container
+        function showMain() {
+            document.getElementById('graph-container').style.display = 'none';
+            document.getElementById('main-container').style.display = 'block';
+        }
+
+        // Load IDs on page load
+        window.onload = loadIDs;
+
     </script>
 </body>
 </html>
